@@ -1,0 +1,23 @@
+---
+import HeaderButton from '../components/HeaderButton.astro'
+import Info from '../icons/Info.astro'
+import Older from '../icons/Older.astro'
+import Rocket from '../icons/Rocket.astro'
+---
+
+<header class="py-8 px-4 mx-auto max-w-xl lg:py-16 lg:px-6"> 
+    <div class="mx-auto text-center mb-8 lg:mb-16">
+        <h2 class="mb-4 text-5xl tracking-tight font-extrabold text-white">
+            Welcome to Space 🚀
+        </h2>
+        <p class="font-light text-gray-500 sm:text-xl dark:test-gray-400">
+            All the information about Space
+        </p>
+    </div>
+
+    <nav class="flex flex-col items-center justify-between w-full text-center md:flex-row">
+        <HeaderButton class="text-white" href="/"><Rocket slot="before-text"/>Latest releases</HeaderButton>
+        <HeaderButton class="text-white" href="/about"><Info slot="before-text"/>About the project</HeaderButton>
+        <HeaderButton class="text-white" href="/oldest"><Older slot="before-text"/>Older</HeaderButton>
+    </nav>
+</header>

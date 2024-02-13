@@ -1,0 +1,31 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import {getLaunchBy, getLaunches} from '../../services/spacex'
+const { id } = Astro.params
+console.log({ id })
+
+let launch
+if (id) {
+    launch = await getLaunchBy({ id })
+} 
+
+console.log(launch)
+
+export const prerender = false
+
+/* export async function getStaticPaths () {
+    //llamamos a nuestra api para obtener las ID de todos los lanzamientos
+    const launches = await getLaunches()
+    return launches.map((launch) => ({
+        params: {id: launch.id}
+    }))
+} */
+
+---
+<Layout title=`Lanzamiento #${id}`>
+    <article class="flex gap-y-4 flex-col justify-center items-center">
+        <img class="w-52 h-auto" src={launch?.links.patch.small} alt={launch?.name}>
+        <h2 class="text-4xl text-white font-bold"> Launch #{launch?.flight_number}</h2>
+        <p class="text-lg">{launch?.details}</p>
+    </article>
+</Layout>

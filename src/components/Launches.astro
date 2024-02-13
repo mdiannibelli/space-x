@@ -1,0 +1,52 @@
+---
+import CardLaunch from './CardLaunch.astro'
+
+// podemos separar la api en otra carpeta e importarla con una función para ordenar el código
+import {getLaunches} from '../services/spacex'
+const launchesApi = await getLaunches();
+// ejecutamos el js
+
+// #1 FETCH
+const res = await fetch('https://api.spacexdata.com/v5/launches/query', { //utilizamos la query para no traer todo
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+        query: {},
+        options: {
+            sort: {
+                date_unix:"asc", //ordenamos la fecha ascendente
+            },
+            limit: 12 //limitamos para que aparezcan 12 lanzamientos
+        }
+    })
+})
+// #2 parseamos el .json de data para obtener la info y convertirlo a typescript
+/* const data = JSON.stringify(await res.json()) */
+/* console.log(data) */
+
+// #3 
+/* console.log(data) to typescript in app.quicktype.io y la importamos */
+import { type APISpaceXResponse} from '../types/api'
+
+// #4 renombramos el data por el nombre que le pusimos y por el cual importamos la api
+/* const data = await res.json() as APISpaceXResponse */
+
+// #5 destructuramos docs y le asignamos un nombre launches
+const {docs: launches} = await res.json() as APISpaceXResponse
+
+---
+
+<!-- #6 launches.map -->
+<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    {launchesApi.map (({id, links, details, flight_number, success }) => (
+        <CardLaunch 
+        id={id}
+        img={links.patch.small}
+        details= {details}
+        flightNumber={flight_number}
+        success={success}
+        />
+    ))}
+</div>../services/spacex
